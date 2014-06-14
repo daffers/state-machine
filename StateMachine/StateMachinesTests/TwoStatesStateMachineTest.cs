@@ -21,7 +21,7 @@ namespace StateMachinesTests
         [Test]
         public void TheValidActionForLoggedInStateIsToLogout()
         {
-            var loggedin = new LoggedInState();
+            var loggedin = new LoggedInState(null);
             IEnumerable<LogoutAction> actions = loggedin.GetActions();
 
             Assert.That(actions.Count(), Is.EqualTo(1));
@@ -91,6 +91,27 @@ namespace StateMachinesTests
 
             Assert.That(postLoginAction, Is.TypeOf<LoginAction>());
         }
+
+        [Test]
+        public void OnceLoggedInCanLogout()
+        {
+            var accountWorkflow = new AccountWorkflow();
+            IEnumerable<StateAction> actions = accountWorkflow.GetActions();
+
+            LoginAction login = (LoginAction)actions.First();
+
+            login.Login(new LoginCredentials("username", "password"));
+
+            var actionsPostLogin = accountWorkflow.GetActions();
+
+            var postLoginAction = (LogoutAction)actionsPostLogin.First();
+
+            postLoginAction.Logout();
+
+            actions = accountWorkflow.GetActions();
+            login = (LoginAction)actions.First();
+            Assert.That(login, Is.TypeOf<LoginAction>());
+        }
     }
 
     public class SessionId
@@ -120,7 +141,7 @@ namespace StateMachinesTests
         {
             if (_isAuthenticated)
             {
-                var loggedIn = new LoggedInState();
+                var loggedIn = new LoggedInState(HasLoggedOut);
                 return loggedIn.GetActions();
             }
             var state = new LoggedOutState(HasLoggedIn);
@@ -131,17 +152,42 @@ namespace StateMachinesTests
         {
             _isAuthenticated = true;
         }
+
+        private void HasLoggedOut()
+        {
+            _isAuthenticated = false;
+        }
     }
 
     public class LoggedInState
     {
+        private readonly Action _hasLoggedOut;
+
+        public LoggedInState(Action hasLoggedOut)
+        {
+            _hasLoggedOut = hasLoggedOut;
+        }
+
         public IEnumerable<LogoutAction> GetActions()
         {
-            return new List<LogoutAction>() { new LogoutAction() };
+            return new List<LogoutAction>() { new LogoutAction(_hasLoggedOut) };
         }
     }
 
-    public class LogoutAction : StateAction{}
+    public class LogoutAction : StateAction
+    {
+        private readonly Action _hasLoggedOut;
+
+        public LogoutAction(Action hasLoggedOut)
+        {
+            _hasLoggedOut = hasLoggedOut;
+        }
+
+        public void Logout()
+        {
+            _hasLoggedOut.Invoke();
+        }
+    }
 
     public class LoggedOutState
     {
