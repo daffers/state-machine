@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace StateMachinesTests
@@ -11,21 +9,9 @@ namespace StateMachinesTests
     public class TwoStatesStateMachineTest
     {
         [Test]
-        public void CanCreateLoggedOutState()
-        {
-            var loggedOut = new LoggedOutState();
-        }
-
-        [Test]
-        public void CanCreateLoggedInState()
-        {
-            var loggedIn = new LoggedInState();
-        }
-
-        [Test]
         public void TheValidActionForLoggedOutStateIsToLogin()
         {
-            var loggedOut = new LoggedOutState();
+            var loggedOut = new LoggedOutState(null);
             IEnumerable<LoginAction> actions = loggedOut.GetActions();
 
             Assert.That(actions.Count(), Is.EqualTo(1));
@@ -43,19 +29,6 @@ namespace StateMachinesTests
         }
 
         [Test]
-        public void CanCreateAnAccountWorkflow()
-        {
-            var accountWorkflow = new AccountWorkflow();
-        }
-
-        [Test]
-        public void CanGetValidActionsForAccountWorkflow()
-        {
-            var accountWorkflow = new AccountWorkflow();
-            IEnumerable<StateAction> actions = accountWorkflow.GetActions();
-        }
-
-        [Test]
         public void WhenTheWorkFlowIsInitializedTheFirstActionIsLogin()
         {
             var accountWorkflow = new AccountWorkflow();
@@ -64,6 +37,76 @@ namespace StateMachinesTests
             Assert.That(actions.Count(), Is.EqualTo(1));
             Assert.That(actions.First(), Is.TypeOf<LoginAction>());
         }
+
+        [Test]
+        public void WhenCorrectLoginCredentialsSuppliedResultIsASessionId()
+        {
+            var loginCredentials = new LoginCredentials("username", "password");
+            var loginAction = new LoginAction(new Action(() => {}));
+            var result = loginAction.Login(loginCredentials);
+
+            Assert.That(result, Is.TypeOf<SessionId>());
+        }
+
+        [Test]
+        public void WhenIncorrectLoginDetailsSuppliedResultIsANullSession()
+        {
+            var loginCredentials = new LoginCredentials("username", "");
+            var loginAction = new LoginAction(null);
+            var result = loginAction.Login(loginCredentials);
+
+            Assert.That(result, Is.TypeOf<NullSession>());
+        }
+
+        [Test]
+        public void AfterSuccessfulLoginThroughWorflowActionBecomesLogout()
+        {
+            var accountWorkflow = new AccountWorkflow();
+            IEnumerable<StateAction> actions = accountWorkflow.GetActions();
+
+            LoginAction login = (LoginAction)actions.First();
+
+            login.Login(new LoginCredentials("username", "password"));
+
+            var actionsPostLogin = accountWorkflow.GetActions();
+
+            var postLoginAction = actionsPostLogin.First();
+
+            Assert.That(postLoginAction, Is.TypeOf<LogoutAction>());
+        }
+
+        [Test]
+        public void WhenLoginUnsuccessfulWorkflowActionRemainsAsLogin()
+        {
+            var accountWorkflow = new AccountWorkflow();
+            IEnumerable<StateAction> actions = accountWorkflow.GetActions();
+
+            LoginAction login = (LoginAction)actions.First();
+
+            login.Login(new LoginCredentials("username", ""));
+
+            var actionsPostLogin = accountWorkflow.GetActions();
+
+            var postLoginAction = actionsPostLogin.First();
+
+            Assert.That(postLoginAction, Is.TypeOf<LoginAction>());
+        }
+    }
+
+    public class SessionId
+    {
+    }
+
+    public class NullSession : SessionId{ }
+
+    public class LoginCredentials
+    {
+        public LoginCredentials(string username, string password)
+        {
+            Password = password;
+        }
+
+        public string Password { get; private set; }
     }
 
     public class StateAction
@@ -72,9 +115,21 @@ namespace StateMachinesTests
 
     public class AccountWorkflow
     {
+        private bool _isAuthenticated;
         public IEnumerable<StateAction> GetActions()
         {
-            return new List<StateAction>(){new LoginAction()};
+            if (_isAuthenticated)
+            {
+                var loggedIn = new LoggedInState();
+                return loggedIn.GetActions();
+            }
+            var state = new LoggedOutState(HasLoggedIn);
+            return state.GetActions();
+        }
+
+        private void HasLoggedIn()
+        {
+            _isAuthenticated = true;
         }
     }
 
@@ -86,18 +141,38 @@ namespace StateMachinesTests
         }
     }
 
-    public class LogoutAction{}
+    public class LogoutAction : StateAction{}
 
     public class LoggedOutState
     {
+        private readonly Action _hasLoggedIn;
+
+        public LoggedOutState(Action hasLoggedIn)
+        {
+            _hasLoggedIn = hasLoggedIn;
+        }
+
         public IEnumerable<LoginAction> GetActions()
         {
-            return new List<LoginAction>(){new LoginAction()};
+            return new List<LoginAction>(){new LoginAction(_hasLoggedIn)};
         }
     }
 
     public class LoginAction : StateAction
     {
-        
+        private readonly Action _hasLoggedIn;
+
+        public LoginAction(Action hasLoggedIn)
+        {
+            _hasLoggedIn = hasLoggedIn;
+        }
+
+        public SessionId Login(LoginCredentials loginCredentials)
+        {
+            if (loginCredentials.Password == string.Empty)
+                return new NullSession();
+            _hasLoggedIn.Invoke();
+            return new SessionId();
+        }
     } 
 }
