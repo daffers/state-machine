@@ -6,9 +6,4 @@ namespace StateMachine.Framework
     {
         public abstract IEnumerable<StateAction> GetActions();
     }
-
-    public abstract class Workflow
-    {
-        public abstract void HandleEvent(WorkflowEvent workflowEvent);
-    }
 }

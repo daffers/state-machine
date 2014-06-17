@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Framework\StateAction.cs" />
+    <Compile Include="Framework\TransitionRule.cs" />
+    <Compile Include="Framework\Workflow.cs" />
     <Compile Include="Framework\WorkflowEvent.cs" />
     <Compile Include="Framework\WorkflowState.cs" />
     <Compile Include="LoginCredentials.cs" />
@@ -47,6 +49,9 @@
     <Compile Include="NullSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionId.cs" />
+    <Compile Include="TransitionRules\AdminLoginTransitionRule.cs" />
+    <Compile Include="TransitionRules\LoginTransitionRule.cs" />
+    <Compile Include="TransitionRules\LogoutTransitionRule.cs" />
     <Compile Include="WorkflowActions\EditMessageAction.cs" />
     <Compile Include="WorkflowActions\LoginAction.cs" />
     <Compile Include="WorkflowActions\LogoutAction.cs" />
