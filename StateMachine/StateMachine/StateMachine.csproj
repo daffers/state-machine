@@ -39,21 +39,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountWorkflow.cs" />
-    <Compile Include="AdministratorLoggedInState.cs" />
-    <Compile Include="EditMessageAction.cs" />
     <Compile Include="Framework\StateAction.cs" />
+    <Compile Include="Framework\WorkflowEvent.cs" />
     <Compile Include="Framework\WorkflowState.cs" />
-    <Compile Include="LoggedOutState.cs" />
-    <Compile Include="LoginAction.cs" />
     <Compile Include="LoginCredentials.cs" />
-    <Compile Include="LogoutAction.cs" />
-    <Compile Include="MessageWorkflow.cs" />
+    <Compile Include="MessageWorkflowState.cs" />
     <Compile Include="NullSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionId.cs" />
-    <Compile Include="UserLoggedInState.cs" />
-    <Compile Include="ViewMessageAction.cs" />
+    <Compile Include="WorkflowActions\EditMessageAction.cs" />
+    <Compile Include="WorkflowActions\LoginAction.cs" />
+    <Compile Include="WorkflowActions\LogoutAction.cs" />
+    <Compile Include="WorkflowActions\ViewMessageAction.cs" />
+    <Compile Include="WorkflowEvents\AdminLoggedIn.cs" />
+    <Compile Include="WorkflowEvents\LoggedOut.cs" />
+    <Compile Include="WorkflowEvents\UserLoggedIn.cs" />
+    <Compile Include="WorkflowStates\AdministratorLoggedInState.cs" />
+    <Compile Include="WorkflowStates\LoggedOutState.cs" />
+    <Compile Include="WorkflowStates\UserLoggedInState.cs" />
+    <Compile Include="Workflows\AccountWorkflow.cs" />
+    <Compile Include="Workflows\MessageWorkflow.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

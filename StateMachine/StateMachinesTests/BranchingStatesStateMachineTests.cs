@@ -3,6 +3,8 @@ using System.Linq;
 using NUnit.Framework;
 using StateMachine;
 using StateMachine.Framework;
+using StateMachine.WorkflowActions;
+using StateMachine.Workflows;
 
 namespace StateMachinesTests
 {
@@ -21,7 +23,7 @@ namespace StateMachinesTests
         }
 
         [Test]
-        public void CanLoginToTheMesageWorflowAsUser()
+        public void CanLoginToTheMesageWorkflowAsUser()
         {
             var workflow = new MessageWorkflow();
             LoginUser(workflow);
@@ -99,7 +101,7 @@ namespace StateMachinesTests
             LoginAdministrator(workflow);
 
             var editMessageAction = (EditMessageAction)workflow.GetActions().First(IsEditMessageAction());
-
+    
             const string helloWorld = "Hello World";
             editMessageAction.SetMessage(helloWorld);
 

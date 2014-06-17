@@ -4,6 +4,9 @@ using System.Linq;
 using NUnit.Framework;
 using StateMachine;
 using StateMachine.Framework;
+using StateMachine.WorkflowActions;
+using StateMachine.Workflows;
+using StateMachine.WorkflowStates;
 
 namespace StateMachinesTests
 {
@@ -13,7 +16,7 @@ namespace StateMachinesTests
         [Test]
         public void TheValidActionForLoggedOutStateIsToLogin()
         {
-            var loggedOut = new LoggedOutState(null, null, null);
+            var loggedOut = new LoggedOutState(null);
             var actions = loggedOut.GetActions();
 
             Assert.That(actions.Count(), Is.EqualTo(1));
@@ -23,7 +26,7 @@ namespace StateMachinesTests
         [Test]
         public void TheValidActionForLoggedInStateIsToLogout()
         {
-            var loggedin = new UserLoggedInState(null, null);
+            var loggedin = new UserLoggedInState(null, new MessageWorkflowState());
             var actions = loggedin.GetActions();
 
             Assert.That(actions.First(), Is.TypeOf<LogoutAction>());
@@ -42,7 +45,7 @@ namespace StateMachinesTests
         public void WhenCorrectLoginCredentialsSuppliedResultIsASessionId()
         {
             var loginCredentials = new LoginCredentials("username", "password");
-            var loginAction = new LoginAction(new Action(() => {}), null, null);
+            var loginAction = new LoginAction(new AccountWorkflow());
             var result = loginAction.Login(loginCredentials);
 
             Assert.That(result, Is.TypeOf<SessionId>());
@@ -52,7 +55,7 @@ namespace StateMachinesTests
         public void WhenIncorrectLoginDetailsSuppliedResultIsANullSession()
         {
             var loginCredentials = new LoginCredentials("username", "");
-            var loginAction = new LoginAction(null, null, null);
+            var loginAction = new LoginAction(new AccountWorkflow());
             var result = loginAction.Login(loginCredentials);
 
             Assert.That(result, Is.TypeOf<NullSession>());
