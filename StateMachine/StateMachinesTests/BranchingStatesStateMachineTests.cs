@@ -133,22 +133,22 @@ namespace StateMachinesTests
             firstAction.Login(new LoginCredentials("User", "Password"));
         }
 
-        private static Func<StateAction, bool> IsLoginAction()
+        private static Func<WorkflowAction, bool> IsLoginAction()
         {
             return action => action.GetType() == typeof(LoginAction);
         }
 
-        private static Func<StateAction, bool> IsEditMessageAction()
+        private static Func<WorkflowAction, bool> IsEditMessageAction()
         {
             return action => action.GetType() == typeof(EditMessageAction);
         }
 
-        private static Func<StateAction, bool> IsViewMessageAction()
+        private static Func<WorkflowAction, bool> IsViewMessageAction()
         {
             return action => action.GetType() == typeof(ViewMessageAction);
         }
 
-        private static Func<StateAction, bool> IsLogoutAction()
+        private static Func<WorkflowAction, bool> IsLogoutAction()
         {
             return action => action.GetType() == typeof(LogoutAction);
         }

@@ -39,7 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Framework\StateAction.cs" />
+    <Compile Include="Framework\WorkflowAction.cs" />
     <Compile Include="Framework\TransitionRule.cs" />
     <Compile Include="Framework\Workflow.cs" />
     <Compile Include="Framework\WorkflowEvent.cs" />

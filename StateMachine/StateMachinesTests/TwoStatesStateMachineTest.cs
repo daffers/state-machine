@@ -36,7 +36,7 @@ namespace StateMachinesTests
         public void WhenTheWorkFlowIsInitializedTheFirstActionIsLogin()
         {
             var accountWorkflow = new AccountWorkflow();
-            IEnumerable<StateAction> actions = accountWorkflow.GetActions();
+            IEnumerable<WorkflowAction> actions = accountWorkflow.GetActions();
 
             Assert.That(actions.Any(IsLoginAction()), Is.True);
         }
@@ -116,12 +116,12 @@ namespace StateMachinesTests
             Assert.That(login, Is.TypeOf<LoginAction>());
         }
 
-        private static Func<StateAction, bool> IsLogoutAction()
+        private static Func<WorkflowAction, bool> IsLogoutAction()
         {
             return action => action.GetType() == typeof(LogoutAction);
         }
 
-        private static Func<StateAction, bool> IsLoginAction()
+        private static Func<WorkflowAction, bool> IsLoginAction()
         {
             return action => action.GetType() == typeof(LoginAction);
         }

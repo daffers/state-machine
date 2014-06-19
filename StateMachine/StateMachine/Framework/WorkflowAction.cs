@@ -1,6 +1,6 @@
 namespace StateMachine.Framework
 {
-    public class StateAction
+    public class WorkflowAction
     {
     }
 }

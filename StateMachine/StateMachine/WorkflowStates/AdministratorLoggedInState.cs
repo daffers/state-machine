@@ -15,9 +15,9 @@ namespace StateMachine.WorkflowStates
             _state = state;
         }
 
-        public override IEnumerable<StateAction> GetActions()
+        public override IEnumerable<WorkflowAction> GetActions()
         {
-            return new List<StateAction>()
+            return new List<WorkflowAction>()
             {
                 new LogoutAction(_workflow),
                 new EditMessageAction(_state),

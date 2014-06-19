@@ -13,7 +13,7 @@ namespace StateMachine.WorkflowStates
             _workflow = workflow;
         }
 
-        public override IEnumerable<StateAction> GetActions()
+        public override IEnumerable<WorkflowAction> GetActions()
         {
             return new List<LoginAction>()
             {

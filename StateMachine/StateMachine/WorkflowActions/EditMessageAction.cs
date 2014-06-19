@@ -2,7 +2,7 @@ using StateMachine.Framework;
 
 namespace StateMachine.WorkflowActions
 {
-    public class EditMessageAction : StateAction
+    public class EditMessageAction : WorkflowAction
     {
         private readonly MessageWorkflowState _state;
 

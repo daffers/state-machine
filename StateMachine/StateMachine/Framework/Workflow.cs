@@ -16,7 +16,7 @@ namespace StateMachine.Framework
         public abstract List<TransitionRule> TransitionRules { get; }
         public abstract WorkflowState StartingState { get; }
 
-        public IEnumerable<StateAction> GetActions()
+        public IEnumerable<WorkflowAction> GetActions()
         {
             if (_currentState == null)
                 _currentState = StartingState;

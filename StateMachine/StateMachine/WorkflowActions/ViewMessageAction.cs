@@ -2,7 +2,7 @@
 
 namespace StateMachine.WorkflowActions
 {
-    public class ViewMessageAction : StateAction
+    public class ViewMessageAction : WorkflowAction
     {
         private readonly MessageWorkflowState _state;
 

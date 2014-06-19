@@ -3,7 +3,7 @@ using StateMachine.WorkflowEvents;
 
 namespace StateMachine.WorkflowActions
 {
-    public class LogoutAction : StateAction
+    public class LogoutAction : WorkflowAction
     {
         private readonly Workflow _workflow;
 

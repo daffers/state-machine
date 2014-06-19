@@ -4,6 +4,6 @@ namespace StateMachine.Framework
 {
     public abstract class WorkflowState
     {
-        public abstract IEnumerable<StateAction> GetActions();
+        public abstract IEnumerable<WorkflowAction> GetActions();
     }
 }

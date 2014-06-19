@@ -3,7 +3,7 @@ using StateMachine.WorkflowEvents;
 
 namespace StateMachine.WorkflowActions
 {
-    public class LoginAction : StateAction
+    public class LoginAction : WorkflowAction
     {
         private readonly Workflow _workflowEventSink;
 

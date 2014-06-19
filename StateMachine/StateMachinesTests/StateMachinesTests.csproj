@@ -43,9 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PersistingWorkflowStateAcrossWorkflowInstancesTests.cs" />
     <Compile Include="SingleStateStateMachineTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BranchingStatesStateMachineTests.cs" />
+    <Compile Include="TestsToDriveActionRequestResponseModel.cs" />
     <Compile Include="TwoStatesStateMachineTest.cs" />
   </ItemGroup>
   <ItemGroup>
