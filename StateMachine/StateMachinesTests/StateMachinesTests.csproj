@@ -50,6 +50,7 @@
     <Compile Include="BranchingStatesStateMachineTests.cs" />
     <Compile Include="TestsToDriveActionRequestResponseModel.cs" />
     <Compile Include="TestToDriveVersionedWorkflows.cs" />
+    <Compile Include="TestToDriveWorkflowStarter.cs" />
     <Compile Include="TwoStatesStateMachineTest.cs" />
   </ItemGroup>
   <ItemGroup>

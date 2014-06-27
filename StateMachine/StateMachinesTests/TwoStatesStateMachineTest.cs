@@ -10,43 +10,45 @@ using StateMachine.WorkflowStates;
 
 namespace StateMachinesTests
 {
+    public class WorkflowFacade
+    {
+        private readonly AccountWorkflow _accountWorkflow;
+
+        public WorkflowFacade()
+        {
+            _accountWorkflow = new AccountWorkflow();
+        }
+
+        public IEnumerable<Type> GetAvailableActions()
+        {
+            return _accountWorkflow.GetActions().Select(a => a.GetType());
+        }
+
+        public object ExecuteAction(Type actionType, object request)
+        {
+            var action = _accountWorkflow.GetActions().Single(a => a.GetType() == actionType);
+            return action.ExcuteAction(request);
+        }
+    }
+
     [TestFixture]
     public class TwoStatesStateMachineTest
     {
         [Test]
-        public void TheValidActionForLoggedOutStateIsToLogin()
-        {
-            var loggedOut = new LoggedOutState(null);
-            var actions = loggedOut.GetActions();
-
-            Assert.That(actions.Count(), Is.EqualTo(1));
-            Assert.That(actions.First(), Is.TypeOf<LoginAction>());
-        }
-
-        [Test]
-        public void TheValidActionForLoggedInStateIsToLogout()
-        {
-            var loggedin = new UserLoggedInState(null, new MessageWorkflowState());
-            var actions = loggedin.GetActions();
-
-            Assert.That(actions.First(), Is.TypeOf<LogoutAction>());
-        }
-
-        [Test]
         public void WhenTheWorkFlowIsInitializedTheFirstActionIsLogin()
         {
-            var accountWorkflow = new AccountWorkflow();
-            IEnumerable<WorkflowAction> actions = accountWorkflow.GetActions();
-
+            var facade = new WorkflowFacade();
+            var actions = facade.GetAvailableActions();
+            
             Assert.That(actions.Any(IsLoginAction()), Is.True);
         }
 
         [Test]
         public void WhenCorrectLoginCredentialsSuppliedResultIsASessionId()
         {
-            var loginCredentials = new LoginCredentials("username", "password");
-            var loginAction = new LoginAction(new AccountWorkflow());
-            var result = loginAction.Login(loginCredentials);
+            var facade = new WorkflowFacade();
+
+            var result = facade.ExecuteAction(typeof(LoginAction), new LoginCredentials("username", "password"));
 
             Assert.That(result, Is.TypeOf<SessionId>());
         }
@@ -54,76 +56,64 @@ namespace StateMachinesTests
         [Test]
         public void WhenIncorrectLoginDetailsSuppliedResultIsANullSession()
         {
-            var loginCredentials = new LoginCredentials("username", "");
-            var loginAction = new LoginAction(new AccountWorkflow());
-            var result = loginAction.Login(loginCredentials);
+            var facade = new WorkflowFacade();
+
+            var result = facade.ExecuteAction(typeof(LoginAction), new LoginCredentials("username", ""));
 
             Assert.That(result, Is.TypeOf<NullSession>());
         }
 
         [Test]
-        public void AfterSuccessfulLoginThroughWorflowActionBecomesLogout()
+        public void AfterSuccessfulLoginThroughWorkflowActionBecomesLogout()
         {
-            var accountWorkflow = new AccountWorkflow();
-            var actions = accountWorkflow.GetActions();
+            var facade = new WorkflowFacade();
+            var actions = facade.GetAvailableActions();
+            
+            facade.ExecuteAction(actions.First(), new LoginCredentials("username", "password"));
 
-            var login = (LoginAction)actions.First();
-
-            login.Login(new LoginCredentials("username", "password"));
-
-            var actionsPostLogin = accountWorkflow.GetActions();
+            var actionsPostLogin = facade.GetAvailableActions();
 
             var postLoginAction = actionsPostLogin.First(IsLogoutAction());
 
-            Assert.That(postLoginAction, Is.TypeOf<LogoutAction>());
+            Assert.That(postLoginAction, Is.EqualTo(typeof(LogoutAction)));
         }
 
         [Test]
         public void WhenLoginUnsuccessfulWorkflowActionRemainsAsLogin()
         {
-            var accountWorkflow = new AccountWorkflow();
-            var actions = accountWorkflow.GetActions();
+            var facade = new WorkflowFacade();
+            
+            facade.ExecuteAction(typeof(LoginAction), new LoginCredentials("username", ""));
 
-            var login = (LoginAction)actions.First();
-
-            login.Login(new LoginCredentials("username", ""));
-
-            var actionsPostLogin = accountWorkflow.GetActions();
+            var actionsPostLogin = facade.GetAvailableActions();
 
             var postLoginAction = actionsPostLogin.First();
 
-            Assert.That(postLoginAction, Is.TypeOf<LoginAction>());
+            Assert.That(postLoginAction, Is.EqualTo(typeof(LoginAction)));
         }
 
         [Test]
         public void OnceLoggedInCanLogout()
         {
-            var accountWorkflow = new AccountWorkflow();
-            var actions = accountWorkflow.GetActions();
+            var facade = new WorkflowFacade();
 
-            var login = (LoginAction)actions.First();
+            facade.ExecuteAction(typeof(LoginAction), new LoginCredentials("username", "password"));
 
-            login.Login(new LoginCredentials("username", "password"));
+            facade.ExecuteAction(typeof (LogoutAction), null);
 
-            var actionsPostLogin = accountWorkflow.GetActions();
-
-            var postLoginAction = (LogoutAction)actionsPostLogin.First();
-
-            postLoginAction.Logout();
-
-            actions = accountWorkflow.GetActions();
-            login = (LoginAction)actions.First(IsLoginAction());
-            Assert.That(login, Is.TypeOf<LoginAction>());
+            var actions = facade.GetAvailableActions();
+            var loginAvailable = actions.Any(IsLoginAction());
+            Assert.That(loginAvailable, Is.True);
         }
 
-        private static Func<WorkflowAction, bool> IsLogoutAction()
+        private static Func<Type, bool> IsLogoutAction()
         {
-            return action => action.GetType() == typeof(LogoutAction);
+            return action => action == typeof(LogoutAction);
         }
 
-        private static Func<WorkflowAction, bool> IsLoginAction()
+        private static Func<Type, bool> IsLoginAction()
         {
-            return action => action.GetType() == typeof(LoginAction);
+            return action => action == typeof(LoginAction);
         }
     }
 }
