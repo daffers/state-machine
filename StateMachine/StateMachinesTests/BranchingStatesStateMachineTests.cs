@@ -62,7 +62,7 @@ namespace StateMachinesTests
 
             var viewMessage = (ViewMessageAction)workflow.GetActions().First(IsViewMessageAction());
 
-            var message = viewMessage.GetMessage();
+            var message = viewMessage.Execute(null);
 
             Assert.That(message, Is.EqualTo(string.Empty));
         }
@@ -89,7 +89,7 @@ namespace StateMachinesTests
             editMessageAction.SetMessage(helloWorld);
 
             var viewMessageAction = (ViewMessageAction)workflow.GetActions().First(IsViewMessageAction());
-            var messageRetrieved = viewMessageAction.GetMessage();
+            var messageRetrieved = viewMessageAction.Execute(null);
 
             Assert.That(messageRetrieved, Is.EqualTo(helloWorld));
         }
@@ -110,7 +110,7 @@ namespace StateMachinesTests
 
             LoginUser(workflow);
             var viewMessageAction = (ViewMessageAction)workflow.GetActions().First(IsViewMessageAction());
-            var messageRetrieved = viewMessageAction.GetMessage();
+            var messageRetrieved = viewMessageAction.Execute(null);
 
             Assert.That(messageRetrieved, Is.EqualTo(helloWorld));
         }
@@ -121,7 +121,7 @@ namespace StateMachinesTests
 
             var firstAction = (LoginAction) actions.First();
 
-            firstAction.Login(new LoginCredentials("Administrator", "Password"));
+            firstAction.Execute(new LoginCredentials("Administrator", "Password"));
         }
 
         private static void LoginUser(MessageWorkflow workflow)
@@ -130,7 +130,7 @@ namespace StateMachinesTests
 
             var firstAction = (LoginAction) actions.First(IsLoginAction());
 
-            firstAction.Login(new LoginCredentials("User", "Password"));
+            firstAction.Execute(new LoginCredentials("User", "Password"));
         }
 
         private static Func<WorkflowAction, bool> IsLoginAction()

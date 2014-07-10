@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using StateMachine.Framework;
 using StateMachine.WorkflowActions;
@@ -18,6 +19,14 @@ namespace StateMachine.WorkflowStates
             return new List<LoginAction>()
             {
                 new LoginAction(_workflow)
+            };
+        }
+
+        public override IEnumerable<Type> GetAvailableActions()
+        {
+            return new List<Type>()
+            {
+                typeof(LoginAction)
             };
         }
     }

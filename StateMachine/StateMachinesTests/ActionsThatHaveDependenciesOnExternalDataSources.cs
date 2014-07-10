@@ -17,7 +17,7 @@ namespace StateMachinesTests
             var workflow = new GetNamesWorkflow(new MessageWorkflowState(),new NamesDataSource(new List<string>()));
             var firstAction = workflow.GetActions().First();
 
-            var namesFromAction = firstAction.ExcuteAction(null);
+            var namesFromAction = firstAction.Execute(null);
             Assert.That(namesFromAction, Is.AssignableTo<IEnumerable<string>>());
             var namesList = namesFromAction as IEnumerable<string>;
             Assert.That(namesList, Is.Empty);
@@ -32,7 +32,7 @@ namespace StateMachinesTests
             var firstAction = workflow.GetActions().First();
 
 
-            var namesFromAction = firstAction.ExcuteAction(null);
+            var namesFromAction = firstAction.Execute(null);
             Assert.That(namesFromAction, Is.AssignableTo<IEnumerable<string>>());
             var namesList = namesFromAction as IEnumerable<string>;
             Assert.That(namesList, Contains.Item("Bob"));
@@ -90,6 +90,14 @@ namespace StateMachinesTests
         }
     }
 
+    public class NoTransition : TransitionRule
+    {
+        public override WorkflowState Transition(WorkflowEvent workflowEvent, Workflow workflow, MessageWorkflowState state)
+        {
+            return null;
+        }
+    }
+
     public class CanListNamesState : WorkflowState
     {
         private readonly NamesDataSource _dataSource;
@@ -119,7 +127,7 @@ namespace StateMachinesTests
             _dataSource = dataSource;
         }
 
-        public override object ExcuteAction(object input)
+        public override object Execute(object input)
         {
             return _dataSource.GetNames().ToList();
         }
