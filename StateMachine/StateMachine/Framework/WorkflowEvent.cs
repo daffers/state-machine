@@ -1,6 +1,6 @@
 namespace StateMachine.Framework
 {
-    public class WorkflowEvent
+    public interface IWorkflowEvent
     {
     }
 }

@@ -27,12 +27,4 @@ namespace StateMachine.Framework
 
         protected abstract TResult Execute(TInput input);
     }
-
-    public class Example : WorkflowActionTyped<int, string>
-    {
-        protected override string Execute(int input)
-        {
-            return input.ToString();
-        }
-    }
 }

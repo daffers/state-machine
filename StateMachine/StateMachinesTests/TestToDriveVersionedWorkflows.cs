@@ -134,7 +134,7 @@ namespace StateMachinesTests
 
     public class NoTransition : TransitionRule
     {
-        public override WorkflowState Transition(WorkflowEvent workflowEvent, Workflow workflow, MessageWorkflowState state)
+        public override WorkflowState Transition(IWorkflowEvent workflowEvent, Workflow workflow, MessageWorkflowState state)
         {
             return null;
         }
