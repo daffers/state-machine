@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using StateMachine.Framework;
 using StateMachine.WorkflowActions;
@@ -22,15 +21,6 @@ namespace StateMachine.WorkflowStates
             {
                 new LogoutAction(_workflow),
                 new ViewMessageAction(_state)
-            };
-        }
-
-        public override IEnumerable<Type> GetAvailableActions()
-        {
-            return new List<Type>()
-            {
-                typeof(LogoutAction),
-                typeof(ViewMessageAction)
             };
         }
     }

@@ -15,10 +15,5 @@ namespace StateMachine.WorkflowActions
         {
             _state.CurrentMessage = message;
         }
-
-        public override object Execute(object input)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

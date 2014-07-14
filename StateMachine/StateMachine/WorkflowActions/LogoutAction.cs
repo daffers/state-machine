@@ -17,7 +17,7 @@ namespace StateMachine.WorkflowActions
             _workflow.HandleEvent(new LoggedOut());
         }
 
-        public override object Execute(object input)
+        public override object ExcuteAction(object input)
         {
             _workflow.HandleEvent(new LoggedOut());
             return null;

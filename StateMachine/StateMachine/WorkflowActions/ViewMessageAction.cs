@@ -11,7 +11,7 @@ namespace StateMachine.WorkflowActions
             _state = state;
         }
         
-        public override object Execute(object input)
+        public string GetMessage()
         {
             return _state.CurrentMessage;
         }
