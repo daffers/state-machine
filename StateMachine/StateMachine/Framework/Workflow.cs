@@ -23,7 +23,7 @@ namespace StateMachine.Framework
             return _currentState.GetActions();
         }
 
-        protected internal void HandleEvent(WorkflowEvent workflowEvent)
+        protected internal void HandleEvent(IWorkflowEvent workflowEvent)
         {
             foreach (var rule in TransitionRules)
             {

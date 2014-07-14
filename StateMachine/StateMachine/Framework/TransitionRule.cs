@@ -2,6 +2,6 @@ namespace StateMachine.Framework
 {
     public abstract class TransitionRule
     {
-        public abstract WorkflowState Transition(WorkflowEvent workflowEvent, Workflow workflow, MessageWorkflowState state);
+        public abstract WorkflowState Transition(IWorkflowEvent workflowEvent, Workflow workflow, MessageWorkflowState state);
     }
 }

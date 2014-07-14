@@ -6,7 +6,7 @@ namespace StateMachine.TransitionRules
 {
     public class LoginTransitionRule : TransitionRule
     {
-        public override WorkflowState Transition(WorkflowEvent workflowEvent, Workflow workflow, MessageWorkflowState state)
+        public override WorkflowState Transition(IWorkflowEvent workflowEvent, Workflow workflow, MessageWorkflowState state)
         {
             return (workflowEvent.GetType() == typeof(UserLoggedIn)) ? new UserLoggedInState(workflow, state) : null;
         }
