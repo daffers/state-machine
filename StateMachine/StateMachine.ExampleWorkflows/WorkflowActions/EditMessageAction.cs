@@ -1,14 +1,14 @@
 using StateMachine.Framework;
 
-namespace StateMachine.WorkflowActions
+namespace StateMachine.ExampleWorkflows.WorkflowActions
 {
     public class EditMessageAction : WorkflowAction
     {
         private readonly MessageWorkflowState _state;
 
-        public EditMessageAction(MessageWorkflowState state)
+        public EditMessageAction(object state)
         {
-            _state = state;
+            _state = (MessageWorkflowState)state;
         }
 
         public void SetMessage(string message)

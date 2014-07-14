@@ -1,15 +1,15 @@
 using System.Collections.Generic;
+using StateMachine.ExampleWorkflows.WorkflowActions;
 using StateMachine.Framework;
-using StateMachine.WorkflowActions;
 
-namespace StateMachine.WorkflowStates
+namespace StateMachine.ExampleWorkflows.WorkflowStates
 {
     public class AdministratorLoggedInState : WorkflowState
     {
         private readonly Workflow _workflow;
-        private readonly MessageWorkflowState _state;
+        private readonly object _state;
 
-        public AdministratorLoggedInState(Workflow workflow, MessageWorkflowState state)
+        public AdministratorLoggedInState(Workflow workflow, object state)
         {
             _workflow = workflow;
             _state = state;

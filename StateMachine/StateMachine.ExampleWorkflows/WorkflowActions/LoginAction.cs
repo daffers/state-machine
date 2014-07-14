@@ -1,7 +1,7 @@
+using StateMachine.ExampleWorkflows.WorkflowEvents;
 using StateMachine.Framework;
-using StateMachine.WorkflowEvents;
 
-namespace StateMachine.WorkflowActions
+namespace StateMachine.ExampleWorkflows.WorkflowActions
 {
     public class LoginAction : WorkflowActionTyped<LoginCredentials, SessionId>
     {

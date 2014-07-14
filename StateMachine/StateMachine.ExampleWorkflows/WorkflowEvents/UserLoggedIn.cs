@@ -1,6 +1,6 @@
 using StateMachine.Framework;
 
-namespace StateMachine.WorkflowEvents
+namespace StateMachine.ExampleWorkflows.WorkflowEvents
 {
     public class UserLoggedIn : IWorkflowEvent { }
 }

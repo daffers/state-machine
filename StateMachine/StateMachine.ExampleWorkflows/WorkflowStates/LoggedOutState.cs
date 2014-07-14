@@ -1,8 +1,8 @@
 using System.Collections.Generic;
+using StateMachine.ExampleWorkflows.WorkflowActions;
 using StateMachine.Framework;
-using StateMachine.WorkflowActions;
 
-namespace StateMachine.WorkflowStates
+namespace StateMachine.ExampleWorkflows.WorkflowStates
 {
     public class LoggedOutState : WorkflowState
     {

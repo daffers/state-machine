@@ -2,9 +2,10 @@
 using System.Linq;
 using NUnit.Framework;
 using StateMachine;
+using StateMachine.ExampleWorkflows;
+using StateMachine.ExampleWorkflows.WorkflowActions;
+using StateMachine.ExampleWorkflows.Workflows;
 using StateMachine.Framework;
-using StateMachine.WorkflowActions;
-using StateMachine.Workflows;
 
 namespace StateMachinesTests
 {

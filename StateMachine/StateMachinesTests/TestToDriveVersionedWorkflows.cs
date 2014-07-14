@@ -2,6 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using StateMachine;
+using StateMachine.ExampleWorkflows;
 using StateMachine.Framework;
 
 namespace StateMachinesTests
@@ -134,7 +135,7 @@ namespace StateMachinesTests
 
     public class NoTransition : TransitionRule
     {
-        public override WorkflowState Transition(IWorkflowEvent workflowEvent, Workflow workflow, MessageWorkflowState state)
+        public override WorkflowState Transition(IWorkflowEvent workflowEvent, Workflow workflow, object state)
         {
             return null;
         }

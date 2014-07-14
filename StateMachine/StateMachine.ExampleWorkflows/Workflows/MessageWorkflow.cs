@@ -1,9 +1,9 @@
 using System.Collections.Generic;
+using StateMachine.ExampleWorkflows.TransitionRules;
+using StateMachine.ExampleWorkflows.WorkflowStates;
 using StateMachine.Framework;
-using StateMachine.TransitionRules;
-using StateMachine.WorkflowStates;
 
-namespace StateMachine.Workflows
+namespace StateMachine.ExampleWorkflows.Workflows
 {
     public class MessageWorkflow : Workflow
     {
