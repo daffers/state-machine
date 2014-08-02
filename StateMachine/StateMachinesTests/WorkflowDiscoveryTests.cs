@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using StateMachine.ExampleWorkflows.WorkflowStates;
 using StateMachine.Framework;
 
 namespace StateMachinesTests
@@ -16,7 +17,7 @@ namespace StateMachinesTests
 
         public override WorkflowState StartingState
         {
-            get { throw new System.NotImplementedException(); }
+            get { return new LoggedOutState(this); }
         }
     }
 
@@ -33,7 +34,7 @@ namespace StateMachinesTests
 
         public override WorkflowState StartingState
         {
-            get { throw new System.NotImplementedException(); }
+            get { return new LoggedOutState(this); }
         }
     }
 

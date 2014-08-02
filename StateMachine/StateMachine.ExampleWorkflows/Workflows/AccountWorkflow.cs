@@ -7,7 +7,7 @@ namespace StateMachine.ExampleWorkflows.Workflows
 {
     public class AccountWorkflow : Workflow
     {
-        public AccountWorkflow() : base(new MessageWorkflowState())
+        public AccountWorkflow() : base(null)
         {
         }
 

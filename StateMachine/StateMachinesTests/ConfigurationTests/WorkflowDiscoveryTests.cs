@@ -1,12 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using StateMachine.ExampleWorkflows.WorkflowActions;
 using StateMachine.Framework.Configuration;
 
 namespace StateMachinesTests.ConfigurationTests
 {
     [TestFixture]
-    public class WorkflowConfigurationTests
+    public class WorkflowDiscoveryTests
     {
         [Test]
         public void CanConfigureASingleWorkflow()
@@ -59,12 +61,44 @@ namespace StateMachinesTests.ConfigurationTests
     }
 
     [TestFixture]
-    public class StartingWorflowTests
+    public class StartingWorkflowTests
     {
         [Test]
-        public void TestName()
+        public void WhenAWorkflowIsConfiguredItStartingActionsAreAvailable()
         {
+            var workflowConfigurationBuilder = new WorkflowConfigurationBuilder();
+            workflowConfigurationBuilder
+                .ConfigureWorkflow("LoginWorkflow")
+                .WithVersion(1)
+                .ImplementedBy(typeof(TwoFactorLoginWorkflow));
 
+            var actionLoader = new WorkflowActionLoader();
+
+            var descriptor = new WorkflowDescriptor("LoginWorkflow", 1);
+
+            IEnumerable<Type> startingActions = actionLoader.GetWorkflowStartingActions(descriptor);
+
+            Assert.That(startingActions.Count(), Is.EqualTo(1));
+            var firstActionType = startingActions.First();
+
+            Assert.That(firstActionType, Is.EqualTo(typeof(LoginAction)));
         }
     }
+
+    public class WorkflowActionLoader
+    {
+        public IEnumerable<Type> GetWorkflowStartingActions(WorkflowDescriptor descriptor)
+        {
+            return new List<Type>();
+        }
+    }
+
+    //TODO: tests around versioning of the state object
+
+    //should design a few different workflows...
+    /*
+     *  1. We have A login and edit message test
+     *  2. We should have a 3 factor login to edit message variation
+     *  3. We need a workflow with two version - different by the state object
+     */
 }
