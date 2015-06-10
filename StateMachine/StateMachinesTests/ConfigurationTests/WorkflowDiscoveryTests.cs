@@ -89,7 +89,7 @@ namespace StateMachinesTests.ConfigurationTests
     {
         public IEnumerable<Type> GetWorkflowStartingActions(WorkflowDescriptor descriptor)
         {
-            return new List<Type>();
+            return new List<Type>(){typeof(LoginAction)};
         }
     }
 
